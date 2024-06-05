@@ -14,6 +14,7 @@ matplotlib = "^3.9.0"
 paddleocr = "^2.7.3"
 pytesseract = "^0.3.10"
 paddlepaddle = {version = "^2.6.1", source = "mirror.baidu.com"}
+jinja2 = "^3.1.4"
 
 
 [[tool.poetry.source]]
