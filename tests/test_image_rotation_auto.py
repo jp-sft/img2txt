@@ -2,11 +2,7 @@ import cv2
 import numpy as np
 import pytest
 
-from img2text.utils.image_rotation_auto import (
-    detect_angle,
-    detect_angle_rotate,
-    rotate,
-)
+from img2text.utils.image_rotation_auto import detect_angle, detect_angle_rotate, rotate
 
 
 def test_detect_angle_no_lines():

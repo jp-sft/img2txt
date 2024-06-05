@@ -89,10 +89,12 @@ class TextExtractorPaddleOCR(TextExtractor):
             # Calculer la hauteur moyenne de la boîte pour déterminer la ligne
             line_height = sum(point[1] for point in box) / len(box)
 
-            # Arrondir la hauteur à l'entier le plus proche pour simplifier l'alignement
+            # Arrondir la hauteur à l'entier le plus proche
+            # pour simplifier l'alignement
             line_height = round(line_height)
 
-            # Ajouter le texte à la ligne correspondante dans le dictionnaire aligné
+            # Ajouter le texte à la ligne correspondante dans
+            # le dictionnaire aligné
             if line_height in aligned_texts:
                 aligned_texts[line_height].append(text)
             else:
@@ -310,18 +312,3 @@ def plot_ocr_res(image: np.ndarray, ocr_res: pd.DataFrame, save_path: str = None
     if save_path:
         plt.savefig(save_path)
     plt.show()
-
-
-if __name__ == "__main__":
-    import os
-
-    image_path: str = os.environ["TEST_IMAGE_PATH"]
-
-    plot_image_path = os.environ["TEST_OUTPUT_IMAGE_PATH"]
-
-    extractor = TextExtractorPaddleOCR()
-    text = extractor.img2text(image_path)
-    print(text)
-    bboxe = extractor.image2boxes(image_path)
-    image = read_image_to_ndarray(image_path)
-    plot_ocr_res(image, bboxe, plot_image_path)

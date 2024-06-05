@@ -21,6 +21,16 @@ name = "mirror.baidu.com"
 url = "https://mirror.baidu.com/pypi/simple"
 priority = "explicit"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+black = "^24.4.2"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+bandit = "^1.7.8"
+safety = "^3.2.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

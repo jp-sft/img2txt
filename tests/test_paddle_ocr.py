@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 import pandas as pd
 
-from img2text.engine import TextExtractorPaddleOCR
+from img2text import TextExtractorPaddleOCR
 
 image_path: str = str(Path(__file__).parent / "image.png")
 
