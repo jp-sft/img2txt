@@ -1,8 +1,11 @@
 import cv2
 import numpy as np
-import pytest
 
-from img2text.utils.image_rotation_auto import detect_angle, detect_angle_rotate, rotate
+from img2text.utils.image_rotation_auto import (
+    detect_angle,
+    detect_angle_rotate,
+    rotate,
+)
 
 
 def test_detect_angle_no_lines():
@@ -37,7 +40,3 @@ def test_detect_angle_rotate_with_lines():
     angle, rotated_image = detect_angle_rotate(image)
     assert -1.0 <= angle <= 1.0  # Should be close to 0 degrees
     assert rotated_image.shape == image.shape
-
-
-if __name__ == "__main__":
-    pytest.main()

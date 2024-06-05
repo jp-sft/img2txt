@@ -10,10 +10,15 @@ def detect_angle(image: np.ndarray) -> float:
         image (np.ndarray): The input image as a NumPy array.
 
     Returns:
-        float: The median angle of the detected lines in the image, or 0 if no lines are found.
+        float: The median angle of the detected lines in the image, or 0 if no
+        lines are found.
     """
     # Convert to grayscale and apply Gaussian blur
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
+    if len(image.shape) == 3:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = image
+
     gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
     # Apply Canny edge detection
@@ -59,7 +64,8 @@ def detect_angle_rotate(img: np.ndarray) -> tuple[float, np.ndarray]:
         img (np.ndarray): The input image as a NumPy array.
 
     Returns:
-        tuple[float, np.ndarray]: A tuple containing the detected angle and the rotated image.
+        tuple[float, np.ndarray]: A tuple containing the detected angle and
+          the rotated image.
     """
     median_angle = detect_angle(img)
     img_rotated = rotate(img, median_angle)

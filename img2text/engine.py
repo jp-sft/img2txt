@@ -117,11 +117,13 @@ class TextExtractorPaddleOCR(TextExtractor):
                 distances.append(distance)
             line_spacing[line_height] = distances
 
-        # Ajuster les textes alignés sur chaque ligne en fonction des espacements
+        # Ajuster les textes alignés sur chaque ligne en fonction des
+        #  espacements
         for line_height, texts in aligned_texts.items():
             adjusted_texts = []
             for i, text in enumerate(texts):
-                # Ajouter le texte avec un espace ajusté à la fin sauf pour le dernier texte
+                # Ajouter le texte avec un espace ajusté à la fin sauf pour le
+                # dernier texte
                 adjusted_texts.append(
                     text + " " * round(line_spacing[line_height][i])
                     if i < len(texts) - 1
@@ -149,7 +151,11 @@ class TesseractOCR(TextExtractor):
     def image2boxes(self, image_path: str) -> pd.DataFrame:
         image = read_image_to_ndarray(image_path)
         _, rotated_image = detect_angle_rotate(image)
-        data = image_to_data(rotated_image, output_type=Output.DICT, lang="fra")
+        data = image_to_data(
+            rotated_image,
+            output_type=Output.DICT,
+            lang="fra",
+        )
 
         boxes = []
         for i in range(len(data["level"])):
@@ -204,10 +210,12 @@ def get_box(boxes):
 
 def put_line_num(bboxes):
     """
-    Assigns line numbers to detected text boxes based on their vertical positions.
+    Assigns line numbers to detected text boxes based on their vertical
+    positions.
 
     Args:
-        bboxes (pd.DataFrame): DataFrame with structured information about the boxes.
+        bboxes (pd.DataFrame): DataFrame with structured information about the
+        boxes.
     """
     bboxes["line_num"] = [-1] * len(bboxes)
     ln = -1
@@ -259,14 +267,20 @@ def read_image_to_ndarray(image_path: str) -> np.ndarray:
         raise ValueError(f"Error reading image: {image_path} ({e})") from e
 
 
-def plot_ocr_res(image: np.ndarray, ocr_res: pd.DataFrame, save_path: str = None):
+def plot_ocr_res(
+    image: np.ndarray,
+    ocr_res: pd.DataFrame,
+    save_path: str = None,
+):
     """
     Plots OCR results on the image.
 
     Args:
         image (np.ndarray): The input image.
-        ocr_res (pd.DataFrame): DataFrame containing OCR results with bounding boxes and text.
-        save_path (str, optional): Path to save the plotted image. If None, the image is not saved.
+        ocr_res (pd.DataFrame): DataFrame containing OCR results with bounding
+          boxes and text.
+        save_path (str, optional): Path to save the plotted image. If None,
+            the image is not saved.
 
     Returns:
         None
