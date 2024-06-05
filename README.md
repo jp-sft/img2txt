@@ -1,0 +1,1 @@
+[![codecov](https://codecov.io/github/jp-sft/img2txt/graph/badge.svg?token=NO6G0DS9RB)](https://codecov.io/github/jp-sft/img2txt)
