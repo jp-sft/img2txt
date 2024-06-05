@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from img2text import TesseractOCR
+from img2text2 import TesseractOCR
 
 image_path: str = str(Path(__file__).parent / "image.png")
 

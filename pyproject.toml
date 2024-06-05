@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "img2text"
 version = "0.1.0"
-description = ""
+description = "Image to text"
 authors = ["Jessy Pango <kvnjessy@gmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "img2text2" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"

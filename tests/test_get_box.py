@@ -1,6 +1,6 @@
 import unittest
 
-from img2text.engine import get_box
+from img2text2.engine import get_box
 
 
 class TestGetBox(unittest.TestCase):

@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from img2text import plot_ocr_res
+from img2text2 import plot_ocr_res
 
 
 class TestPlotOCRRes(unittest.TestCase):
