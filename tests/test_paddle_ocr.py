@@ -1,11 +1,11 @@
 import unittest
-from unittest.mock import patch
 from pathlib import Path
+from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
-from img2text import (
-    TextExtractorPaddleOCR,
-)
+
+from img2text import TextExtractorPaddleOCR
 
 # Path to a sample image for testing
 image_path: str = str(Path(__file__).parent / "image.png")
