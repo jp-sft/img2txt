@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "img2text"
+version = "0.1.0"
+description = ""
+authors = ["Jessy Pango <kvnjessy@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.2"
+pillow = "^10.3.0"
+numpy = "^1.26.4"
+matplotlib = "^3.9.0"
+paddleocr = "^2.7.3"
+pytesseract = "^0.3.10"
+paddlepaddle = {version = "^2.6.1", source = "mirror.baidu.com"}
+
+
+[[tool.poetry.source]]
+name = "mirror.baidu.com"
+url = "https://mirror.baidu.com/pypi/simple"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
