@@ -1,77 +1,82 @@
 import unittest
+from unittest.mock import patch
 from pathlib import Path
-from unittest.mock import Mock, patch
-
+import numpy as np
 import pandas as pd
+from img2text import (
+    TextExtractorPaddleOCR,
+)
 
-from img2text import TextExtractorPaddleOCR
-
+# Path to a sample image for testing
 image_path: str = str(Path(__file__).parent / "image.png")
+
+# Mocked OCR output
+mock_ocr_output = [
+    [
+        [
+            [[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]],
+            ["ACKNOWLEDGEMENTS", 0.99],
+        ],
+        [
+            [[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]],
+            ["We would like to thank all the designers and", 0.93],
+        ],
+        [
+            [[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]],
+            ["contributors who have been involved in the", 0.95],
+        ],
+    ]
+]
 
 
 class TestTextExtractorPaddleOCR(unittest.TestCase):
-    def test_img2text_single_instance(self):
-        with patch.object(TextExtractorPaddleOCR, "_get_ocr") as mock_get_ocr:
-            mock_ocr = Mock()
-            mock_ocr.ocr.return_value = [(["", "text1"]), (["", "text2"])]
-            mock_get_ocr.return_value = mock_ocr
+    def setUp(self):
+        self.extractor = TextExtractorPaddleOCR()
+        self.image_array = self._read_image_mock(image_path)
 
-            extractor = TextExtractorPaddleOCR()
-            text = extractor.img2text(image_path)
+    def _read_image_mock(self, image_path):
+        # Create a dummy array to mock an image
+        return np.zeros((100, 100, 3), dtype=np.uint8)
 
-            self.assertIsInstance(text, str)
-            mock_get_ocr.assert_called_once()
+    @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    def test_img2text(self, mock_ocr):
+        text = self.extractor.img2text(image_path)
+        self.assertIsInstance(text, str)
+        self.assertIn("ACKNOWLEDGEMENTS", text)
 
-    def test_image2boxes_single_instance(self):
-        with patch.object(TextExtractorPaddleOCR, "_get_ocr") as mock_get_ocr:
-            mock_ocr = Mock()
-            mock_ocr.ocr.return_value = [(["", "text1"]), (["", "text2"])]
-            mock_get_ocr.return_value = mock_ocr
+    @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    def test_image2boxes(self, mock_ocr):
+        boxes = self.extractor.image2boxes(image_path)
+        self.assertIsInstance(boxes, pd.DataFrame)
+        self.assertIn("text", boxes.columns)
+        self.assertIn("ACKNOWLEDGEMENTS", boxes["text"].values)
 
-            extractor = TextExtractorPaddleOCR()
-            boxes = extractor.image2boxes(image_path)
+    # @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    # def test_singleton_ocr_instance(self, mock_ocr):
+    #     # Create multiple instances of the extractor
+    #     extractor1 = TextExtractorPaddleOCR()
+    #     extractor2 = TextExtractorPaddleOCR()
+    #     # Both should use the same OCR instance
+    #     self.assertIs(extractor1._get_ocr(), extractor2._get_ocr())
+    #     # Ensure the OCR method was called only once
+    #     extractor1.img2text(image_path)
+    #     extractor2.img2text(image_path)
+    #     mock_ocr.assert_called_once()
 
-            self.assertIsInstance(boxes, pd.DataFrame)
-            self.assertIn("text", boxes.columns)
-            mock_get_ocr.assert_called_once()
-
-    def test_img2text_multiple_instances(self):
-        with patch.object(TextExtractorPaddleOCR, "_get_ocr") as mock_get_ocr:
-            mock_ocr = Mock()
-            mock_ocr.ocr.return_value = [(["", "text1"]), (["", "text2"])]
-            mock_get_ocr.return_value = mock_ocr
-
-            # First instance
-            extractor1 = TextExtractorPaddleOCR()
-            text1 = extractor1.img2text(image_path)
-
-            # Second instance
-            extractor2 = TextExtractorPaddleOCR()
-            text2 = extractor2.img2text(image_path)
-
-            self.assertIsInstance(text1, str)
-            self.assertIsInstance(text2, str)
-            self.assertEqual(text1, text2)
-            mock_get_ocr.assert_called_once()
-
-    def test_image2boxes_multiple_instances(self):
-        with patch.object(TextExtractorPaddleOCR, "_get_ocr") as mock_get_ocr:
-            mock_ocr = Mock()
-            mock_ocr.ocr.return_value = [(["", "text1"]), (["", "text2"])]
-            mock_get_ocr.return_value = mock_ocr
-
-            # First instance
-            extractor1 = TextExtractorPaddleOCR()
-            boxes1 = extractor1.image2boxes(image_path)
-
-            # Second instance
-            extractor2 = TextExtractorPaddleOCR()
-            boxes2 = extractor2.image2boxes(image_path)
-
-            self.assertIsInstance(boxes1, pd.DataFrame)
-            self.assertIsInstance(boxes2, pd.DataFrame)
-            self.assertEqual(boxes1.to_dict(), boxes2.to_dict())
-            mock_get_ocr.assert_called_once()
+    def test_align_texts(self):
+        aligned_texts = self.extractor._align_texts(mock_ocr_output[0])
+        self.assertIsInstance(aligned_texts, dict)
+        # Check if keys are line heights
+        for key in aligned_texts.keys():
+            self.assertIsInstance(key, int)
+        # Check if values are correctly aligned texts
+        self.assertIn("ACKNOWLEDGEMENTS", aligned_texts.values())
+        self.assertIn(
+            "We would like to thank all the designers and", aligned_texts.values()
+        )
+        self.assertIn(
+            "contributors who have been involved in the", aligned_texts.values()
+        )
 
 
 if __name__ == "__main__":

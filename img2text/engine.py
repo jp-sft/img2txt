@@ -89,51 +89,35 @@ class TextExtractorPaddleOCR(TextExtractor):
             # Calculer la hauteur moyenne de la boîte pour déterminer la ligne
             line_height = sum(point[1] for point in box) / len(box)
 
-            # Arrondir la hauteur à l'entier le plus proche
-            # pour simplifier l'alignement
+            # Arrondir la hauteur à l'entier le plus proche pour simplifier l'alignement
             line_height = round(line_height)
 
-            # Ajouter le texte à la ligne correspondante dans
-            # le dictionnaire aligné
+            # Ajouter le texte à la ligne correspondante dans le dictionnaire aligné
             if line_height in aligned_texts:
-                aligned_texts[line_height].append(text)
+                aligned_texts[line_height].append((box, text))
             else:
-                aligned_texts[line_height] = [text]
+                aligned_texts[line_height] = [(box, text)]
 
-        # Calculer les espacements entre les boîtes sur la même ligne
-        line_spacing = {}
-        for line_height, texts in aligned_texts.items():
-            # Trier les boîtes par position x
-            sorted_texts = sorted(
-                texts, key=lambda x: ocr_results[texts.index(x)][0][0][0]
-            )
-            distances = []
-            for i in range(len(sorted_texts) - 1):
-                # Calculer la distance entre les boîtes consécutives
-                distance = (
-                    ocr_results[texts.index(sorted_texts[i + 1])][0][0][0]
-                    - ocr_results[texts.index(sorted_texts[i])][0][2][0]
-                )
-                distances.append(distance)
-            line_spacing[line_height] = distances
-
-        # Ajuster les textes alignés sur chaque ligne en fonction des
-        #  espacements
-        for line_height, texts in aligned_texts.items():
-            adjusted_texts = []
-            for i, text in enumerate(texts):
-                # Ajouter le texte avec un espace ajusté à la fin sauf pour le
-                # dernier texte
-                adjusted_texts.append(
-                    text + " " * round(line_spacing[line_height][i])
-                    if i < len(texts) - 1
-                    else text
-                )
-            aligned_texts[line_height] = adjusted_texts
+        # Ajuster les textes alignés sur chaque ligne en fonction des espacements
+        for line_height, items in aligned_texts.items():
+            sorted_items = sorted(items, key=lambda item: item[0][0][0])
+            aligned_texts[line_height] = sorted_items
 
         # Concaténer les textes alignés sur chaque ligne avec des espaces
-        for line_height, texts in aligned_texts.items():
-            aligned_texts[line_height] = " ".join(texts)
+        for line_height, items in aligned_texts.items():
+            texts = [item[1] for item in items]
+            boxes = [item[0] for item in items]
+            adjusted_texts = []
+            for i, text in enumerate(texts):
+                if i < len(texts) - 1:
+                    # Calculer la distance entre les boîtes consécutives
+                    distance = boxes[i + 1][0][0] - boxes[i][2][0]
+                    adjusted_texts.append(
+                        text + " " * round(distance / 10)
+                    )  # Adjust spacing
+                else:
+                    adjusted_texts.append(text)
+            aligned_texts[line_height] = " ".join(adjusted_texts)
 
         return aligned_texts
 
