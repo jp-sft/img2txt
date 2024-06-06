@@ -4,7 +4,7 @@ on:
     types:
       - created
   push:
-    
+
 jobs:
   build:
     strategy:
@@ -25,6 +25,11 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Build a binary wheel and a source tarball
         run: poetry build
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-package-distributions
+          path: dist/
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
