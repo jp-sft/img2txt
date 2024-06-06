@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "img2text"
+name = "invoice2text"
 version = "0.1.0"
-description = "Image to text"
+description = "Invoice to text"
 authors = ["Jessy Pango <kvnjessy@gmail.com>"]
 readme = "README.md"
 packages = [
-    { include = "img2text2" },
+    { include = "img2text" },
 ]
 
 [tool.poetry.dependencies]

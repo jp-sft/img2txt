@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from img2text2.utils.image_rotation_auto import (
+from img2text.utils.image_rotation_auto import (
     detect_angle,
     detect_angle_rotate,
     rotate,
