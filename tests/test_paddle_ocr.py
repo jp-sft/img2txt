@@ -5,7 +5,7 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from img2text import TextExtractorPaddleOCR
+from invoice2text.img2text import TextExtractorPaddleOCR
 
 # Path to a sample image for testing
 image_path: str = str(Path(__file__).parent / "image.png")
@@ -38,20 +38,20 @@ class TestTextExtractorPaddleOCR(unittest.TestCase):
         # Create a dummy array to mock an image
         return np.zeros((100, 100, 3), dtype=np.uint8)
 
-    @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    @patch("invoice2text.img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
     def test_img2text(self, mock_ocr):
         text = self.extractor.img2text(image_path)
         self.assertIsInstance(text, str)
         self.assertIn("ACKNOWLEDGEMENTS", text)
 
-    @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    @patch("invoice2text.img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
     def test_image2boxes(self, mock_ocr):
         boxes = self.extractor.image2boxes(image_path)
         self.assertIsInstance(boxes, pd.DataFrame)
         self.assertIn("text", boxes.columns)
         self.assertIn("ACKNOWLEDGEMENTS", boxes["text"].values)
 
-    # @patch("img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
+    # @patch("invoice2text.img2text.engine.PaddleOCR.ocr", return_value=mock_ocr_output)
     # def test_singleton_ocr_instance(self, mock_ocr):
     #     # Create multiple instances of the extractor
     #     extractor1 = TextExtractorPaddleOCR()

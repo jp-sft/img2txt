@@ -1,6 +1,6 @@
 import unittest
 
-from img2text.engine import get_box
+from invoice2text.img2text.engine import get_box
 
 
 class TestGetBox(unittest.TestCase):

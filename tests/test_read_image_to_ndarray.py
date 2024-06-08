@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 
-from img2text.engine import read_image_to_ndarray
+from invoice2text.img2text.engine import read_image_to_ndarray
 
 
 class TestReadImageToNdarray(unittest.TestCase):

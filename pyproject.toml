@@ -4,9 +4,9 @@ version = "0.1.0"
 description = "Invoice to text"
 authors = ["Jessy Pango <kvnjessy@gmail.com>"]
 readme = "README.md"
-packages = [
-    { include = "img2text" },
-]
+# packages = [
+#     { include = "invoice2text" },
+# ]
 
 [tool.poetry.dependencies]
 python = "^3.12"

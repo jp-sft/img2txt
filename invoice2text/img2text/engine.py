@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from paddleocr import PaddleOCR
 from pytesseract import Output, image_to_data, image_to_string
 
-from img2text.utils.image_rotation_auto import detect_angle_rotate
+from invoice2text.img2text.utils.image_rotation_auto import detect_angle_rotate
 
 
 class TextExtractor(ABC):

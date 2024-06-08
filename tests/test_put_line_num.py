@@ -1,6 +1,6 @@
 import unittest
 
-from img2text.engine import get_box, put_line_num
+from invoice2text.img2text.engine import get_box, put_line_num
 
 
 class TestPutLineNum(unittest.TestCase):
