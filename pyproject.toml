@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "invoice2text"
-version = "0.1.1a1"
+version = "0.1.1"
 description = "Invoice to text"
 authors = ["Jessy Pango <kvnjessy@gmail.com>"]
 readme = "README.md"
