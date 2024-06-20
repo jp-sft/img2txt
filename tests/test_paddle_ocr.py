@@ -7,7 +7,6 @@ import pandas as pd
 from invoice2text.img2text import TextExtractorPaddleOCR
 from tests.data import image_path
 
-
 # Mocked OCR output
 mock_ocr_output = [
     [

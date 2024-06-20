@@ -1,10 +1,12 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
-from pydantic import BaseModel
 import os
-from typing import List
-from invoice2text.img2text import OCRPipeline
 import tempfile
+from typing import List
+
 import fitz  # PyMuPDF for PDF handling
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from pydantic import BaseModel
+
+from invoice2text.img2text import OCRPipeline
 
 app = FastAPI()
 

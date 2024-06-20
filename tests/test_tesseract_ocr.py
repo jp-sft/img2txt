@@ -3,7 +3,6 @@ import unittest
 import pandas as pd
 
 from invoice2text.img2text import TesseractOCR
-
 from tests.data import image_path
 
 

@@ -1,8 +1,9 @@
+import csv
+
 import cv2
 import numpy as np
-from paddleocr import PaddleOCR
 import pytesseract
-import csv
+from paddleocr import PaddleOCR
 
 from invoice2text.img2text.utils.singleton import SingletonByParams
 
