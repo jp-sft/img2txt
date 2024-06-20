@@ -5,6 +5,7 @@ from .engine import (
     TextExtractorPaddleOCR,
     plot_ocr_res,
 )
+from .pipeline import OCRPipeline
 
 __all__ = [
     "TesseractOCR",
@@ -12,4 +13,5 @@ __all__ = [
     "TextExtractor",
     "TextExtractorPaddleOCR",
     "plot_ocr_res",
+    "OCRPipeline",
 ]

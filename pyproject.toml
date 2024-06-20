@@ -18,6 +18,9 @@ paddleocr = "^2.7.3"
 pytesseract = "^0.3.10"
 paddlepaddle = {version = "^2.6.1", source = "mirror.baidu.com"}
 jinja2 = "^3.1.4"
+textblob = "^0.18.0.post0"
+fastapi = "^0.111.0"
+uvicorn = "^0.30.1"
 
 
 [[tool.poetry.source]]

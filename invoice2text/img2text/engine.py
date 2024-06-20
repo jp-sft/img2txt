@@ -69,13 +69,13 @@ class TextExtractorPaddleOCR(TextExtractor):
     @staticmethod
     def _default_ocr_params() -> dict:
         return {
-            "use_angle_cls": True,
-            "lang": "fr",
-            "show_log": True,
-            "type": "structure",
-            "max_text_length": 50,
-            "det_east_cover_thresh": 0.05,
-            "det_db_score_mode": "slow",
+            # "use_angle_cls": True,
+            "lang": "french",
+            "show_log": False,
+            "type": "ocr",
+            # "max_text_length": 50,
+            # "det_east_cover_thresh": 0.05,
+            # "det_db_score_mode": "slow",
         }
 
     @staticmethod
@@ -310,3 +310,11 @@ def plot_ocr_res(
     if save_path:
         plt.savefig(save_path)
     plt.show()
+
+
+if __name__ == "__main__":
+    import os
+
+    ext = TextExtractorPaddleOCR()
+    res = ext.img2text(os.environ["IMAGE_TEST_PATH"])
+    print(res)
